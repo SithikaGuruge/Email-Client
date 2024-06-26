@@ -1,28 +1,29 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionListener;
 
+public class EmailFrame extends JFrame {
+    private JTextField toAddress;
+    private JTextField subject;
+    private JTextArea bodyArea;
+    private JButton sendButton;
 
-public class EmailFrame extends JFrame{
-
-    EmailFrame(){
+    public EmailFrame() {
         super("My Email Client");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setSize(400, 400);
 
         JLabel title = new JLabel("My Email Client");
         JLabel toLabel = new JLabel("To:");
-        JTextField toAddress = new JTextField(20);
+        toAddress = new JTextField(20);
         JLabel subjectLabel = new JLabel("Subject:");
-        JTextField subject = new JTextField(20);
+        subject = new JTextField(20);
         JLabel bodyLabel = new JLabel("Body:");
-        JTextArea bodyArea = new JTextArea(10, 20);
+        bodyArea = new JTextArea(10, 20);
         JScrollPane bodyScrollPane = new JScrollPane(bodyArea);
-        JButton sendButton = new JButton("Send");
-
-
+        sendButton = new JButton("Send");
         title.setFont(new Font("Arial", Font.BOLD, 24));
         title.setHorizontalAlignment(JLabel.CENTER);
-
         bodyArea.setLineWrap(true);
         bodyArea.setWrapStyleWord(true);
 
@@ -69,6 +70,22 @@ public class EmailFrame extends JFrame{
         this.add(sendButton, gbc);
 
         this.setVisible(true);
+    }
+
+    public String getToAddress() {
+        return toAddress.getText();
+    }
+
+    public String getSubject() {
+        return subject.getText();
+    }
+
+    public String getBody() {
+        return bodyArea.getText();
+    }
+
+    public void addSendButtonListener(ActionListener listener) {
+        sendButton.addActionListener(listener);
     }
 
 }
