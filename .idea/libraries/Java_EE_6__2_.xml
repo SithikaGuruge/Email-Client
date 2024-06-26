@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="Java EE 6 (2)">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/ClientUsingSwing/src/activation.jar!/" />
+      <root url="jar://$PROJECT_DIR$/ClientUsingSwing/src/javax.mail-1.6.2.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
