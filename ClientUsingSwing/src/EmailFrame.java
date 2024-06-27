@@ -1,6 +1,8 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class EmailFrame extends JFrame {
     private JTextField toAddress;
@@ -17,14 +19,6 @@ public class EmailFrame extends JFrame {
         super("My Email Client");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(600, 600);
-
-        JMenuBar menubar = new JMenuBar();
-        JMenu menu = new JMenu("Options");
-        JMenuItem menuItem = new JMenuItem("Add Sender Credentials");
-        menu.add(menuItem);
-        menubar.add(menu);
-        setJMenuBar(menubar);
-
         JLabel title = new JLabel("My Email Client");
         JLabel fromLabel = new JLabel("Your Email:");
         fromAddress = new JTextField(20);
@@ -43,7 +37,7 @@ public class EmailFrame extends JFrame {
         bodyArea.setLineWrap(true);
         bodyArea.setWrapStyleWord(true);
         displayMessage = new JLabel();
-        displayMessage.setForeground(Color.RED); // Set text color to red
+        displayMessage.setForeground(Color.RED);
 
         setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
@@ -105,9 +99,9 @@ public class EmailFrame extends JFrame {
 
         gbc.gridy = 8;
         gbc.gridx = 0;
-        gbc.gridwidth = 2; // Ensure the message label spans across both columns
-        gbc.anchor = GridBagConstraints.CENTER; // Center the message label
-        add(displayMessage, gbc); // Add displayMessage label here
+        gbc.gridwidth = 2;
+        gbc.anchor = GridBagConstraints.CENTER;
+        add(displayMessage, gbc);
 
         setVisible(true);
     }
@@ -134,5 +128,40 @@ public class EmailFrame extends JFrame {
 
     public void addSendButtonListener(ActionListener listener) {
         sendButton.addActionListener(listener);
+    }
+
+    public Boolean confirmDialog(){
+        int output = JOptionPane.showConfirmDialog(
+                this,
+                "Do you want to send this email?",
+                "Confirm Send",
+                JOptionPane.YES_NO_OPTION
+        );
+        return output == 0;
+    }
+
+    public void showSuccessDialog(String message){
+        JOptionPane.showMessageDialog(
+                this,
+               message,
+                "Success",
+                JOptionPane.INFORMATION_MESSAGE
+        );
+    }
+
+    public void showErrorDialog(String message){
+        JOptionPane.showMessageDialog(
+                this,
+                message,
+                "Error",
+                JOptionPane.ERROR_MESSAGE
+        );
+    }
+
+    public Boolean validateEmail(String email) {
+        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+        Pattern pattern = Pattern.compile(emailRegex);
+        Matcher matcher = pattern.matcher(email);
+        return matcher.matches();
     }
 }

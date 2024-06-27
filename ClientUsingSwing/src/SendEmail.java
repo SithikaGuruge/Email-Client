@@ -1,4 +1,6 @@
 import javax.swing.*;
+import java.util.Objects;
+
 public class SendEmail {
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
@@ -10,28 +12,39 @@ public class SendEmail {
                 String from = frame.getFromAddress();
                 String password = frame.getPassword();
                 ConfigEmailSettings driver = new ConfigEmailSettings();
-                if (from.isEmpty()) {
-                    frame.displayMessage.setText("Enter the senders' Email");
 
-                }
-                else if (password.isEmpty()) {
-                    frame.displayMessage.setText("Enter the password");
+                if(frame.confirmDialog()){
+                    if (!frame.validateEmail(from)) {
+                        frame.displayMessage.setText("Enter a Valid Email");
+                    }
+                    else if (password.isEmpty()) {
+                        frame.displayMessage.setText("Enter the password");
 
-                }
-                else if(to.isEmpty()){
-                    frame.displayMessage.setText("Enter valid receiver Email");
-                } else if (subject.isEmpty()) {
-                    frame.displayMessage.setText("Enter a subject");
+                    }
+                    else if(!frame.validateEmail(to)){
+                        frame.displayMessage.setText("Enter a valid receiver Email");
+                    } else if (subject.isEmpty()) {
+                        frame.displayMessage.setText("Enter a subject");
 
-                }
-               else if (body.isEmpty()) {
-                    frame.displayMessage.setText("Enter a Email Body");
+                    }
+                    else if (body.isEmpty()) {
+                        frame.displayMessage.setText("Enter a Email Body");
 
+                    }
+                    else {
+                        String message = driver.send(to, subject, body,from,password);
+                        if(Objects.equals(message, "Email Successfully Sent")){
+                        frame.showSuccessDialog(message);}
+                        else {
+                            frame.showErrorDialog(message);
+                        }
+
+                    }
+                    Timer timer = new Timer(3000, event -> frame.displayMessage.setText(""));
+                    timer.setRepeats(false);
+                    timer.start();
                 }
-                else {driver.send(to, subject, body,from,password);}
-                Timer timer = new Timer(3000, event -> frame.displayMessage.setText(""));
-                timer.setRepeats(false);
-                timer.start();
+
             });
         });
     }
